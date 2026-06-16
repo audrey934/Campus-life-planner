@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Life Planner</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
 
+<body>
+    <header>
+        <nav aria-label="navigation">
+            <a href="#dashboard">Dashboard</a>
+            <a href="#records">Records</a>
+            <a href="#Add-edit">Add Record</a>
+            <a href="#settings">Settings</a>
+            <a href="#about">About</a>
+        </nav>
+    </header>
+    
+    <main id="main-content">
+        <section id="dashboard">
+            <h1> Campus Life Planner</h1>
+            <p> This app helps to manage tasks, events, time, and productivity easily.</p>
+
+            <p> To learn more about the app, please visit <a href="about.html"> About</a> </p>
+
+            <h2> Activity Tracking Stats </h2>
+            <div> Total Tasks : </div>
+            <div> Completed Tasks :</div>
+            <div> Pending Tasks :</div>
+        </section>
+
+        <section id="records">
+            <h2>Records</h2>
+
+            <label for="search"> Search records</label>
+            <input id="search" type="search" placeholder="Search tasks and events">
+
+            <div class="filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Tasks</button>
+                <button class="filter-btn">Events</button>
+            </div>
+
+            <div class="records">
+                <article class="rec-card">
+                    <h3> Orientation Day1</h3>
+                    <p> Date: </p>
+                    <p> Time: </p>
+                    <p> Tag: </p>
+                </article>
+                
+            </div>
+
+        </section>
+
+        <section id="Add-edit">
+            <h2>Add / Edit Task</h2>
+
+           <form id="task-form">
+
+            <label for="title">Title </label>
+
+            <input id="title" name="title" type="text"> 
+
+            <label for="type"> Type</label>
+
+            <select id="type" name="type"> 
+            <option>Task</option>
+            <option>Event</option>
+            </select>
+
+            <label for="duration">Duration</label>
+
+            <input id="duration" name="duration" type="number"> 
+
+            <label for="date"> Date </label>
+            <input id="date" name="date" type="date"> 
+
+            <label for="tags"> Tags </label>
+
+            <input id="tags" name="tags" type="text"> 
+
+            <button type="submit"> Save </button>
+
+           </form>
+
+        </section>
+        <section id="settings">
+              <h2>Settings</h2>
+              <label for="theme">Theme</label>
+              <select id="theme">
+                <option>Light</option>
+                <option>Dark</option>
+              </select>
+
+              <button> Clear everything</button>
+
+        </section>
+    </main>
+    
+</body>
+</html>
