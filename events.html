@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Campus Life Planner | Events</title>
+
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to Content</a>
+
+    <header>
+        <nav aria-label="Main Navigation">
+        <span class="nav-brand">Campus Life Planner</span>
+        <div class="nav-links">
+            <a href="index.html" class="active-page"> Dashboard </a>
+            <a href="events.html"> Events </a>
+            <a href="about.html"> About </a>
+        </div>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section id="events-header">
+            <h1>Events & Classes</h1>
+            <p>Create, manage, edit, and organize campus events and classes.</p>
+        </section>
+
+        <!-- Search -->
+        <section id="search-section">
+            <label for="search">Search Activities</label>
+            <input type="search" id="search" placeholder="Search activities">
+        </section>
+
+        <!-- Filter -->
+        <section id="filter-section">
+            <div class="filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Campus Events</button>
+                <button class="filter-btn">Classes</button>
+            </div>
+        </section>
+
+
+        <!-- Sort -->
+        <section id="sort-section">
+            <label for="sort-select">Sort by</label>
+            <select id="sort-select">
+                <option value="date-asc">Date (earliest first)</option>
+                <option value="date-desc">Date (latest first)</option>
+                <option value="title-asc">Title (A → Z)</option>
+                <option value="title-desc">Title (Z → A)</option>
+                <option value="duration-asc">Duration (shortest first)</option>
+                <option value="duration-desc">Duration (longest first)</option>
+            </select>
+        </section>
+
+        
+        <section id="campus-events">
+            <h2>Campus Events</h2>
+            <div id="event-container" class="records-grid"></div>
+        </section>
+
+        <!-- Classes -->
+        <section id="classes">
+            <h2>Classes</h2>
+            <div id="class-container" class="records-grid"></div>
+        </section>
+
+        <!-- Add Button -->
+        <section id="add-section">
+            <button id="add-record-btn">+ Add Event/Class</button>
+        </section>
+
+
+        <section id="form-modal" class="hidden">
+            <div class="modal-content">
+                <h2 id="form-heading">Add Event/Class</h2>
+                <form id="activity-form">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Activity Type</label>
+                        <select id="type" name="type">
+                            <option value="event">Campus Event</option>
+                            <option value="class">Class</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-date">Start Date</label>
+                            <input type="date" id="start-date" name="start-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">End Date (optional)</label>
+                            <input type="date" id="end-date" name="end-date">
+                        </div>
+                    </div>
+                    <!-- Time-->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-time">From</label>
+                            <input type="time" id="start-time" name="start-time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="end-time">To</label>
+                            <input type="time" id="end-time" name="end-time" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                         <label for="location">Location</label>
+                         <input type="text" id="location" name="location" placeholder="e.g. Main Hall">
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">Tags</label>
+                        <input type="text" id="tags" name="tags" placeholder="e.g. exam, sports, meeting">
+                    </div>
+                    <!-- Error -->
+                    <div id="form-errors" role="alert" aria-live="assertive"></div>
+
+                    <!-- submit/Cancel buttons -->
+                    <div class="form-buttons">
+                        <button type="submit">Save</button>
+                        <button type="button" id="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Deleting activities -->
+        <section id="delete-modal" class="hidden">
+            <div class="modal-content">
+                <h2>Delete Activity</h2>
+                <p>Are you sure you want to delete this activity?</p>
+                <button id="cancel-delete">No</button>
+                <button id="confirm-delete">Yes</button>
+            </div>
+        </section>
+
+        <!-- Status -->
+        <section id="status-region" role="status" aria-live="polite" class="visually-hidden"></section>
+
+    </main>
+
+    <footer> 
+        <p>Campus Life Planner © 2026</p>
+    </footer>
+    <script type="module" src="scripts/ui.js"></script>
+
+</body>
+</html>

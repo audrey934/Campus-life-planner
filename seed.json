@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "Orientation Week Opening",
+    "type": "event",
+    "startDate": "2026-06-24",
+    "endDate": "2026-06-24",
+    "startTime": "09:00",
+    "endTime": "12:00",
+    "duration": 180,
+    "location": "Main Auditorium",
+    "tags": "#ALU #orientation"
+  },
+  {
+    "id": 2,
+    "title": "Typing Tech Workshop",
+    "type": "class",
+    "startDate": "2026-06-19",
+    "endDate": "",
+    "startTime": "13:00",
+    "endTime": "15:30",
+    "duration": 150,
+    "location": "Computer Lab 2",
+    "tags": "#mandatory #skills"
+  },
+  {
+    "id": 3,
+    "title": "Self Directed Learning",
+    "type": "class",
+    "startDate": "2026-06-18",
+    "endDate": "",
+    "startTime": "12:00",
+    "endTime": "15:00",
+    "duration": 180,
+    "location": "Library",
+    "tags": "#study #focus"
+  },
+  {
+    "id": 4,
+    "title": "Game Night",
+    "type": "event",
+    "startDate": "2026-06-26",
+    "endDate": "",
+    "startTime": "18:00",
+    "endTime": "21:00",
+    "duration": 180,
+    "location": "Food Court",
+    "tags": "#fun #social"
+  },
+  {
+    "id": 5,
+    "title": "Kwibuka Memorial Event",
+    "type": "event",
+    "startDate": "2026-06-17",
+    "endDate": "2026-06-18",
+    "startTime": "18:30",
+    "endTime": "20:00",
+    "duration": 90,
+    "location": "Campus Hall",
+    "tags": "#Kwibuka #Rwanda"
+  }
+]

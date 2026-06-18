@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Life Planner | About</title>
+
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to Content</a>
+
+    <!-- navigation bar -->
+    <header>
+        <nav aria-label="Main Navigation">
+        <span class="nav-brand">Campus Life Planner</span>
+
+        <div class="nav-links">
+            <a href="index.html" class="active-page">Dashboard</a>
+            <a href="events.html">Events</a>
+            <a href="about.html"> About</a>
+        </div>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <!-- about section (basic info about the app) -->
+        <section id="about-section">
+            <h1>About Campus Life Planner</h1>
+            <p>Campus Life Planner is a web application that helps departments and administrative teams keep track of campus events, classes, workshops, and other activities in one place.The system allows users to create, edit, delete, search, and sort activities while keeping track of important schedules throughout the academic term. Activities can be categorized as either campus events or classes, making it easier to manage different types of records.</p> <br>
+            <p> To support planning and decision-making, the application also provides a dashboard with activity statistics, upcoming events, and currently ongoing activities. Data is stored locally in the browser and can be imported from or exported to JSON files for backup and sharing purposes.</p> <br>
+            <p> Additional features include search with regular expressions, duration display settings, theme customization, accessibility support, and responsive layouts for different screen sizes.</p>
+
+
+        </section>
+
+        <!-- contact details -->
+        <section id="contact-section">
+
+            <h2>Contact Information</h2>
+
+            <p>Developer: Audrey Noella Hategekimana</p>
+            <p>GitHub:<a href="https://github.com/audrey934" target="_blank">https://github.com/audrey934 </a> </p>
+            <p> Email: <a href="mailto:a.hategekim@alustudent.com"> a.hategekim@alustudent.com </a>
+            </p>
+
+        </section>
+
+        <!-- settings area (theme + time display options) -->
+        <section id="settings-section">
+            <h2>Settings</h2>
+            <!-- time display setting -->
+            <div class="setting-card">
+                <h3>Time Unit</h3>
+                <label for="time-unit"> Display Duration As </label>
+                <select id="time-unit">
+                    <option value="minutes">Minutes</option>
+                    <option value="hours"> Hours </option>
+                </select>
+            </div>
+
+            <!-- switching themes -->
+            <div class="setting-card">
+                <h3>Theme</h3>
+                <label for="theme-select"> Select Theme </label>
+                <select id="theme-select">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- data import/export section -->
+        <section id="data-section">
+            <h2>Data Management</h2>
+            <div class="setting-card">
+                <h3>Export Data</h3>
+                <button id="export-btn"> Export JSON</button>
+            </div>
+
+            <div class="setting-card">
+
+                <h3>Import Data</h3>
+                <input type="file" id="import-file" accept=".json">
+                <button id="import-btn">Import JSON </button>
+            </div>
+
+        </section>
+
+        <!-- screen reader feedback area -->
+        <section id="status-region" role="status" aria-live="polite" class="visually-hidden">
+        </section>
+
+    </main>
+    <footer>
+        <p>Campus Life Planner © 2026</p>
+    </footer>
+
+    <script type="module" src="scripts/ui.js"></script>
+
+</body>
+</html>

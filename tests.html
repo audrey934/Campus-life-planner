@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Life Planner | Tests</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <style>
+        .pass { color: #1D9E75; font-weight: bold; }
+        .fail { color: #E24B4A; font-weight: bold; }
+        #test-results { padding: 1rem; }
+        #test-results li { margin-bottom: 0.5rem; font-family: monospace; }
+        #summary { font-size: 1.1rem; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+
+    <main id="main-content">
+        <h1>Validator test suite</h1>
+        <p>Small assertion checks confirming each regex validator behaves as expected.</p>
+
+        <ul id="test-results"></ul>
+        <div id="summary"></div>
+    </main>
+
+    <script type="module">
+        import {
+            validateTitle,
+            validateTag,
+            validateDate,
+            validateTime,
+            detectDuplicateWords,
+            compileRegex
+        } from "./scripts/validators.js";
+
+        const results = [];
+        let passCount = 0;
+        let failCount = 0;
+
+        function assert(description, condition) {
+            results.push({ description, passed: !!condition });
+            if (condition) {
+                passCount++;
+            } else {
+                failCount++;
+            }
+        }
+
+        // ===== validateTitle =====
+        assert("validateTitle accepts a normal title", validateTitle("Kwibuka Commemoration") === true);
+        assert("validateTitle rejects leading space", validateTitle(" Kwibuka") === false);
+        assert("validateTitle rejects trailing space", validateTitle("Kwibuka ") === false);
+        assert("validateTitle rejects empty string", validateTitle("") === false);
+
+        // ===== validateDate =====
+        assert("validateDate accepts valid YYYY-MM-DD", validateDate("2026-06-19") === true);
+        assert("validateDate rejects invalid month 13", validateDate("2026-13-01") === false);
+        assert("validateDate rejects invalid day 32", validateDate("2026-01-32") === false);
+        assert("validateDate rejects wrong format", validateDate("19-06-2026") === false);
+
+        // ===== validateTime =====
+        assert("validateTime accepts valid 24hr time", validateTime("14:30") === true);
+        assert("validateTime accepts midnight", validateTime("00:00") === true);
+        assert("validateTime rejects hour 24", validateTime("24:00") === false);
+        assert("validateTime rejects bad minutes", validateTime("12:60") === false);
+
+        // ===== validateTag =====
+        assert("validateTag accepts a single word", validateTag("sports") === true);
+        assert("validateTag accepts hyphenated tag", validateTag("study-group") === true);
+        assert("validateTag rejects numbers", validateTag("exam2026") === false);
+        assert("validateTag rejects empty string", validateTag("") === false);
+
+        // ===== detectDuplicateWords (advanced back-reference) =====
+        assert("detectDuplicateWords finds a repeated word", detectDuplicateWords("the the meeting") === true);
+        assert("detectDuplicateWords finds repeated word case-insensitively", detectDuplicateWords("Exam Exam review") === true);
+        assert("detectDuplicateWords returns false with no repeats", detectDuplicateWords("career fair today") === false);
+
+        // ===== compileRegex (safe regex compiler) =====
+        assert("compileRegex returns a RegExp for valid pattern", compileRegex("exam") instanceof RegExp);
+        assert("compileRegex returns null for invalid pattern", compileRegex("(unclosed") === null);
+        assert("compileRegex returns null for empty input", compileRegex("") === null);
+
+        // ===== Render results =====
+        const list = document.getElementById("test-results");
+        results.forEach(r => {
+            const li = document.createElement("li");
+            li.innerHTML = r.passed
+                ? `<span class="pass">PASS</span> — ${r.description}`
+                : `<span class="fail">FAIL</span> — ${r.description}`;
+            list.appendChild(li);
+        });
+
+        document.getElementById("summary").textContent =
+            `${passCount} passed, ${failCount} failed, ${results.length} total`;
+    </script>
+
+</body>
+</html>
