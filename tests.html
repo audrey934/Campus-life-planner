@@ -6,39 +6,38 @@
     <title>Campus Life Planner | Tests</title>
     <link rel="stylesheet" href="styles/style.css">
     <style>
+        #test-results { padding: 1rem; list-style: none; }
+        #test-results li { margin-bottom: 0.5rem; font-family: monospace; font-size: 14px; }
         .pass { color: #1D9E75; font-weight: bold; }
         .fail { color: #E24B4A; font-weight: bold; }
-        #test-results { padding: 1rem; }
-        #test-results li { margin-bottom: 0.5rem; font-family: monospace; }
-        #summary { font-size: 1.1rem; margin-top: 1rem; }
+        .group-heading { font-size: 1rem; font-weight: bold; color: #4A0E8F; margin: 1.5rem 0 0.5rem; }
+        #summary { font-size: 1rem; margin-top: 1.5rem; padding: 1rem; background: #F5F0E8; border-radius: 8px; }
     </style>
 </head>
 <body>
-
     <main id="main-content">
-        <h1>Validator test suite</h1>
-        <p>Small assertion checks confirming each regex validator behaves as expected.</p>
+
+        <h1>Validator Test Suite</h1>
+        <p>Checks that every validation rule in <code>validators.js</code> behaves correctly.</p>
 
         <ul id="test-results"></ul>
         <div id="summary"></div>
+
     </main>
 
     <script type="module">
-        import {
-            validateTitle,
-            validateTag,
-            validateDate,
-            validateTime,
-            detectDuplicateWords,
-            compileRegex
-        } from "./scripts/validators.js";
-
+        import { validateTitle, validateNumber,validateDate, validateTag,validateTime,detectDuplicateWords,compileRegex,matchesPattern,highlight} from "./scripts/validators.js";
         const results = [];
         let passCount = 0;
         let failCount = 0;
+        let currentGroup = "";
+
+        function group(name) {
+            currentGroup = name;
+        }
 
         function assert(description, condition) {
-            results.push({ description, passed: !!condition });
+            results.push({ group: currentGroup, description, passed: !!condition });
             if (condition) {
                 passCount++;
             } else {
@@ -46,43 +45,284 @@
             }
         }
 
-        // ===== validateTitle =====
-        assert("validateTitle accepts a normal title", validateTitle("Kwibuka Commemoration") === true);
-        assert("validateTitle rejects leading space", validateTitle(" Kwibuka") === false);
-        assert("validateTitle rejects trailing space", validateTitle("Kwibuka ") === false);
-        assert("validateTitle rejects empty string", validateTitle("") === false);
+        // validateTitle
+        // Rule: no leading or trailing spaces, not empty
+        
+        group("validateTitle");
 
-        // ===== validateDate =====
-        assert("validateDate accepts valid YYYY-MM-DD", validateDate("2026-06-19") === true);
-        assert("validateDate rejects invalid month 13", validateDate("2026-13-01") === false);
-        assert("validateDate rejects invalid day 32", validateDate("2026-01-32") === false);
-        assert("validateDate rejects wrong format", validateDate("19-06-2026") === false);
+        assert(
+            "accepts a normal title",
+            validateTitle("Kwibuka Commemoration") === true
+        );
+        assert(
+            "accepts a single word",
+            validateTitle("Orientation") === true
+        );
+        assert(
+            "rejects a leading space",
+            validateTitle(" Kwibuka") === false
+        );
+        assert(
+            "rejects a trailing space",
+            validateTitle("Kwibuka ") === false
+        );
+        assert(
+            "rejects an empty string",
+            validateTitle("") === false
+        );
+        assert(
+            "rejects a string of only spaces",
+            validateTitle("   ") === false
+        );
+        
+        // validateNumber
+        // Rule: whole number or up to 2 decimal places, no negatives
+        // Regex: /^(0|[1-9]\d*)(\.\d{1,2})?$/
+       
+        group("validateNumber");
 
-        // ===== validateTime =====
-        assert("validateTime accepts valid 24hr time", validateTime("14:30") === true);
-        assert("validateTime accepts midnight", validateTime("00:00") === true);
-        assert("validateTime rejects hour 24", validateTime("24:00") === false);
-        assert("validateTime rejects bad minutes", validateTime("12:60") === false);
+        assert(
+            "accepts a whole number",
+            validateNumber("60") === true
+        );
+        assert(
+            "accepts zero",
+            validateNumber("0") === true
+        );
+        assert(
+            "accepts one decimal place",
+            validateNumber("1.5") === true
+        );
+        assert(
+            "accepts two decimal places",
+            validateNumber("12.50") === true
+        );
+        assert(
+            "rejects more than two decimal places",
+            validateNumber("1.234") === false
+        );
+        assert(
+            "rejects a leading zero before a digit",
+            validateNumber("01") === false
+        );
+        assert(
+            "rejects letters",
+            validateNumber("abc") === false
+        );
+        assert(
+            "rejects a negative number",
+            validateNumber("-5") === false
+        );
 
-        // ===== validateTag =====
-        assert("validateTag accepts a single word", validateTag("sports") === true);
-        assert("validateTag accepts hyphenated tag", validateTag("study-group") === true);
-        assert("validateTag rejects numbers", validateTag("exam2026") === false);
-        assert("validateTag rejects empty string", validateTag("") === false);
 
-        // ===== detectDuplicateWords (advanced back-reference) =====
-        assert("detectDuplicateWords finds a repeated word", detectDuplicateWords("the the meeting") === true);
-        assert("detectDuplicateWords finds repeated word case-insensitively", detectDuplicateWords("Exam Exam review") === true);
-        assert("detectDuplicateWords returns false with no repeats", detectDuplicateWords("career fair today") === false);
+        // validateDate
+        // Rule: must be in YYYY-MM-DD format with valid month and day
+        group("validateDate");
 
-        // ===== compileRegex (safe regex compiler) =====
-        assert("compileRegex returns a RegExp for valid pattern", compileRegex("exam") instanceof RegExp);
-        assert("compileRegex returns null for invalid pattern", compileRegex("(unclosed") === null);
-        assert("compileRegex returns null for empty input", compileRegex("") === null);
+        assert(
+            "accepts a valid date",
+            validateDate("2026-06-19") === true
+        );
+        assert(
+            "accepts January 1st",
+            validateDate("2026-01-01") === true
+        );
+        assert(
+            "rejects month 13",
+            validateDate("2026-13-01") === false
+        );
+        assert(
+            "rejects month 00",
+            validateDate("2026-00-01") === false
+        );
+        assert(
+            "rejects day 32",
+            validateDate("2026-01-32") === false
+        );
+        assert(
+            "rejects day 00",
+            validateDate("2026-01-00") === false
+        );
+        assert(
+            "rejects wrong format DD-MM-YYYY",
+            validateDate("19-06-2026") === false
+        );
+        assert(
+            "rejects missing dashes",
+            validateDate("20260619") === false
+        );
 
-        // ===== Render results =====
+        // validateTag
+        // Rule: letters and numbers, separated by spaces or hyphens
+
+        group("validateTag");
+
+        assert(
+            "accepts a single word",
+            validateTag("sports") === true
+        );
+        assert(
+            "accepts a hyphenated tag",
+            validateTag("study-group") === true
+        );
+        assert(
+            "accepts letters and numbers together",
+            validateTag("CS101") === true
+        );
+        assert(
+            "accepts a tag with a space",
+            validateTag("career fair") === true
+        );
+        assert(
+            "rejects special characters",
+            validateTag("exam!!!") === false
+        );
+        assert(
+            "rejects an empty string",
+            validateTag("") === false
+        );
+        assert(
+            "rejects a tag starting with a hyphen",
+            validateTag("-sports") === false
+        );
+
+
+
+        // validateTime
+        // Regex: /^([01]\d|2[0-3]):[0-5]\d$/
+     
+        group("validateTime");
+
+        assert(
+            "accepts a valid afternoon time",
+            validateTime("14:30") === true
+        );
+        assert(
+            "accepts midnight",
+            validateTime("00:00") === true
+        );
+        assert(
+            "accepts end of day",
+            validateTime("23:59") === true
+        );
+        assert(
+            "rejects hour 24",
+            validateTime("24:00") === false
+        );
+        assert(
+            "rejects minutes 60",
+            validateTime("12:60") === false
+        );
+        assert(
+            "rejects missing colon",
+            validateTime("1430") === false
+        );
+        assert(
+            "rejects AM/PM format",
+            validateTime("2:30 PM") === false
+        );
+
+
+  
+        // detectDuplicateWords (advanced)
+        // Rule: detects a word appearing twice in a row
+        group("detectDuplicateWords");
+
+        assert(
+            "detects a repeated word",
+            detectDuplicateWords("the the meeting") === true
+        );
+        assert(
+            "detects repeated word case-insensitively",
+            detectDuplicateWords("Exam Exam review") === true
+        );
+        assert(
+            "detects repeated word at end of string",
+            detectDuplicateWords("please review review") === true
+        );
+        assert(
+            "returns false when no repeated words",
+            detectDuplicateWords("career fair today") === false
+        );
+        assert(
+            "returns false for normal sentence",
+            detectDuplicateWords("Kwibuka Commemoration Event") === false
+        );
+
+
+
+        // compileRegex (safe regex compiler)
+
+        group("compileRegex");
+
+        assert(
+            "returns a RegExp for a valid pattern",
+            compileRegex("exam") instanceof RegExp
+        );
+        assert(
+            "returns a RegExp with correct flags",
+            compileRegex("exam", "i").flags === "i"
+        );
+        assert(
+            "returns null for an invalid pattern",
+            compileRegex("(unclosed") === null
+        );
+        assert(
+            "returns null for an empty string",
+            compileRegex("") === null
+        );
+        assert(
+            "returns null for non-string input",
+            compileRegex(null) === null
+        );
+
+//returns true if text matches regex, or if no regex given
+        
+        group("matchesPattern");
+
+        assert(
+            "returns true when text matches the regex",
+            matchesPattern("Career Fair", compileRegex("career")) === true
+        );
+        assert(
+            "returns false when text does not match",
+            matchesPattern("Sports Day", compileRegex("exam")) === false
+        );
+        assert(
+            "returns true when no regex is given",
+            matchesPattern("anything", null) === true
+        );
+
+
+        group("highlight");
+
+        assert(
+            "wraps a match in mark tags",
+            highlight("Career Fair", compileRegex("career")) === "<mark>Career</mark> Fair"
+        );
+        assert(
+            "returns original text when no regex",
+            highlight("Career Fair", null) === "Career Fair"
+        );
+        assert(
+            "returns empty string safely when text is empty",
+            highlight("", compileRegex("exam")) === ""
+        );
+
+
+       
         const list = document.getElementById("test-results");
+        let lastGroup = "";
+
         results.forEach(r => {
+            if (r.group !== lastGroup) {
+                const heading = document.createElement("li");
+                heading.className = "group-heading";
+                heading.textContent = r.group;
+                list.appendChild(heading);
+                lastGroup = r.group;
+            }
+
             const li = document.createElement("li");
             li.innerHTML = r.passed
                 ? `<span class="pass">PASS</span> — ${r.description}`
@@ -90,8 +330,10 @@
             list.appendChild(li);
         });
 
-        document.getElementById("summary").textContent =
-            `${passCount} passed, ${failCount} failed, ${results.length} total`;
+        const summary = document.getElementById("summary");
+        summary.textContent = `${passCount} passed, ${failCount} failed out of ${results.length} total tests`;
+        summary.style.color = failCount === 0 ? "#1D9E75" : "#E24B4A";
+
     </script>
 
 </body>
