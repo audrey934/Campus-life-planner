@@ -56,6 +56,11 @@ outline-offset: 2px;
 header {
 background: #4A0E8F;
 padding: 1rem 1.5rem;
+
+
+position: sticky;
+top: 0;
+z-index: 1000;
 }
 
 nav {
@@ -130,6 +135,37 @@ background: #FFFFFF;
 padding: 1rem;
 border-radius: 10px;
 border-left: 5px solid #4A0E8F;
+}
+
+/* last 7 days trend chart */
+.trend-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 120px;
+    padding: 10px;
+}
+
+.trend-bar-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    height: 100%;
+}
+
+.trend-bar {
+    width: 100%;
+    background: #4A0E8F;
+    border-radius: 4px 4px 0 0;
+    min-height: 2px;
+    transition: height 0.3s ease;
+}
+
+.trend-label {
+    font-size: 0.7rem;
+    margin-top: 4px;
 }
 
 /* Dashboard activity cards */

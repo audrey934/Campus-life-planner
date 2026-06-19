@@ -15,7 +15,7 @@
         <nav aria-label="Main Navigation">
         <span class="nav-brand">Campus Life Planner</span>
         <div class="nav-links">
-            <a href="index.html" class="active-page"> Dashboard </a>
+            <a href="index.html"> Dashboard </a>
             <a href="events.html"> Events </a>
             <a href="about.html"> About </a>
         </div>
@@ -32,6 +32,11 @@
         <section id="search-section">
             <label for="search">Search Activities</label>
             <input type="search" id="search" placeholder="Search activities">
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="case-sensitive-toggle">
+                <label for="case-sensitive-toggle">Case sensitive</label>
+            </div>
         </section>
 
         <!-- Filter -->
@@ -150,6 +155,7 @@
         <p>Campus Life Planner © 2026</p>
     </footer>
     <script type="module" src="scripts/ui.js"></script>
+    <script src="scripts/nav.js" defer></script>
 
 </body>
 </html>

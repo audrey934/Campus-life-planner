@@ -17,7 +17,7 @@
         <span class="nav-brand">Campus Life Planner</span>
 
         <div class="nav-links">
-            <a href="index.html" class="active-page">Dashboard</a>
+            <a href="index.html">Dashboard</a>
             <a href="events.html">Events</a>
             <a href="about.html"> About</a>
         </div>
@@ -59,6 +59,13 @@
                     <option value="hours"> Hours </option>
                 </select>
             </div>
+            
+            <!-- weekly time cap -->
+            <div class="setting-card">
+                <h3>Weekly Time Cap</h3>
+                <label for="weekly-cap">Cap (minutes per week)</label>
+                <input type="number" id="weekly-cap" min="0" step="5">
+            </div>
 
             <!-- switching themes -->
             <div class="setting-card">
@@ -70,8 +77,10 @@
                 </select>
             </div>
         </section>
+       
+  
 
-        <!-- data import/export section -->
+        <!-- data section-->
         <section id="data-section">
             <h2>Data Management</h2>
             <div class="setting-card">
@@ -85,8 +94,14 @@
                 <input type="file" id="import-file" accept=".json">
                 <button id="import-btn">Import JSON </button>
             </div>
+            
+            <div class="setting-card">
+                <h3>reset all</h3>
+                <button id="resetbtn"> Reset</button>
+            </div>
 
         </section>
+
 
         <!-- screen reader feedback area -->
         <section id="status-region" role="status" aria-live="polite" class="visually-hidden">
@@ -98,6 +113,7 @@
     </footer>
 
     <script type="module" src="scripts/ui.js"></script>
+    <script src="scripts/nav.js" defer></script>
 
 </body>
 </html>
