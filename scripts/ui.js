@@ -38,8 +38,6 @@ const resetBtn = document.getElementById("resetbtn");
 const timeUnitSelect = document.getElementById("time-unit");
 const themeSelect = document.getElementById("theme-select");
 const isEventsPage = Boolean(eventContainer && classContainer);
-const weeklyCapInput =document.getElementById("weekly-cap");
-
 
 // Export button
 
@@ -136,19 +134,7 @@ if (timeUnitSelect) {
         saveSettings(current);
         applySavedTheme(themeSelect.value);
         announce(`Theme switched to ${themeSelect.value}.`);
-    });
-
-    // weekly cap setting
-    if (weeklyCapInput) {
-        weeklyCapInput.value = settings.weeklyCap;
-
-        weeklyCapInput.addEventListener("change", () => {
-            const current = loadSettings();
-            current.weeklyCap = Number(weeklyCapInput.value) || 0;
-            saveSettings(current);
-            announce(`Weekly cap set to ${current.weeklyCap} minutes.`);
-        });
-    }
+    });  
 }
 
 

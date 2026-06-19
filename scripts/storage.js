@@ -62,7 +62,6 @@ const SETTINGS_KEY = "campus-settings";
 // Default settings if nothing is saved yet
 const defaultSettings = {
     timeUnit: "minutes",
-    weeklyCap: 10,
     theme: "light"
 };
 
