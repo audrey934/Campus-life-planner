@@ -140,7 +140,32 @@ if (timeUnitSelect) {
         announce(`Theme switched to ${themeSelect.value}.`);
     });  
 }
+// Weekly cap setting
+const weeklyCapInput = document.getElementById("weekly-cap");
+const capFeedback = document.getElementById("cap-feedback");
 
+if (weeklyCapInput) {
+    const settings = loadSettings();
+    weeklyCapInput.value = settings.weeklyCap || "";
+
+    weeklyCapInput.addEventListener("change", () => {
+        const value = parseInt(weeklyCapInput.value, 10);
+
+        if (isNaN(value) || value < 0) {
+            capFeedback.textContent = "Please enter a valid number of minutes.";
+            capFeedback.style.color = "#E24B4A";
+            return;
+        }
+
+        const current = loadSettings();
+        current.weeklyCap = value;
+        saveSettings(current);
+
+        capFeedback.textContent = `Cap saved: ${value} minutes per week.`;
+        capFeedback.style.color = "#1D9E75";
+        announce(`Weekly cap set to ${value} minutes.`);
+    });
+}
 
 applySavedTheme();
 async function init() {

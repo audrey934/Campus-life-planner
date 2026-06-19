@@ -7,6 +7,7 @@ const campusEventsEl = document.getElementById("campus-events-count");
 const classesEl = document.getElementById("classes-count");
 const weeklyEl = document.getElementById("weekly-events");
 const todayEl = document.getElementById("today-events");
+const capStatusEl = document.getElementById("cap-status");
 const totalDurationEl = document.getElementById("total-duration");
 const topTagEl = document.getElementById("top-tag");
 const trendChartEl = document.getElementById("trend-chart");
@@ -78,6 +79,29 @@ function getWeeklyTotalMinutes() {
     return activities
         .filter(isThisWeek)
         .reduce((sum, a) => sum + (a.duration || 0), 0);
+}
+// compares the weekly total against the cap and announces it to screen readers
+function updateCapStatus() {
+    if (!capStatusEl) return;
+
+    const settings = loadSettings();
+    const cap = settings.weeklyCap;
+
+    if (!cap) {
+        capStatusEl.textContent = "No cap set";
+        return;
+    }
+
+    const used = getWeeklyTotalMinutes();
+    const remaining = cap - used;
+
+    if (remaining >= 0) {
+        capStatusEl.textContent = `${remaining} min left`;
+        announce(`You have ${remaining} minutes left this week before reaching your cap.`);
+    } else {
+        capStatusEl.textContent = `${Math.abs(remaining)} min over`;
+        announceUrgent(`You are ${Math.abs(remaining)} minutes over your weekly cap.`);
+    }
 }
 
 function isHappeningNow(activity) {
@@ -248,7 +272,7 @@ async function init() {
         activities = JSON.parse(stored);
     }
 
-    render();
+    initDashboard();
 }
 
 function initDashboard() {
@@ -260,7 +284,8 @@ function initDashboard() {
     renderUpcoming();
 
     announce(`Dashboard updated. ${activities.length} total activities.`);
-
+    updateCapStatus();
 }
+
 applySavedTheme();
 document.addEventListener("DOMContentLoaded", init);
