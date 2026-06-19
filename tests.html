@@ -26,12 +26,8 @@
     </main>
 
     <script type="module">
-        import { validateTitle, validateNumber,validateDate, validateTag,validateTime,detectDuplicateWords,compileRegex,matchesPattern,highlight} from "./scripts/validators.js";
-        const results = [];
-        let passCount = 0;
-        let failCount = 0;
-        let currentGroup = "";
-
+        import { validateTitle, validateNumber, validateDate, validateTag, validateTime, detectDuplicateWords } from "./scripts/validators.js";
+        import { compileRegex, matchesPattern, highlight } from "./scripts/search.js";
         function group(name) {
             currentGroup = name;
         }

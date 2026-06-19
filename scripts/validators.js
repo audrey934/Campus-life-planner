@@ -31,26 +31,3 @@ export function detectDuplicateWords(value) {
     return /\b(\w+)\s+\1\b/i.test(value);
 }
 
-// Safe regex compiler
-
-export function compileRegex(input, flags = "i") {
-    if (!input || typeof input !== "string") return null;
-    try {
-        return new RegExp(input.trim(), flags);
-    } catch (e) {
-        return null;
-    }
-}
-
-// Pattern matcher
-// Returns true if text matches the regex, or true if no regex is given
-export function matchesPattern(text, regex) {
-    if (!regex) return true;
-    return regex.test(text || "");
-}
-
-// Highlight
-export function highlight(text, regex) {
-    if (!regex) return text;
-    return (text || "").replace(regex, match => `<mark>${match}</mark>`);
-}
