@@ -9,7 +9,9 @@
     "endTime": "12:00",
     "duration": 180,
     "location": "Main Auditorium",
-    "tags": "#ALU #orientation"
+    "tags": "ALU orientation",
+    "createdAt": "2026-06-10T08:00:00.000Z",
+    "updatedAt": "2026-06-10T08:00:00.000Z"
   },
   {
     "id": 2,
@@ -21,7 +23,9 @@
     "endTime": "15:30",
     "duration": 150,
     "location": "Computer Lab 2",
-    "tags": "#mandatory #skills"
+    "tags": "mandatory skills",
+    "createdAt": "2026-06-10T08:05:00.000Z",
+    "updatedAt": "2026-06-10T08:05:00.000Z"
   },
   {
     "id": 3,
@@ -33,7 +37,9 @@
     "endTime": "15:00",
     "duration": 180,
     "location": "Library",
-    "tags": "#study #focus"
+    "tags": "study focus",
+    "createdAt": "2026-06-11T09:00:00.000Z",
+    "updatedAt": "2026-06-11T09:00:00.000Z"
   },
   {
     "id": 4,
@@ -45,7 +51,9 @@
     "endTime": "21:00",
     "duration": 180,
     "location": "Food Court",
-    "tags": "#fun #social"
+    "tags": "fun social",
+    "createdAt": "2026-06-12T10:00:00.000Z",
+    "updatedAt": "2026-06-12T10:00:00.000Z"
   },
   {
     "id": 5,
@@ -57,6 +65,106 @@
     "endTime": "20:00",
     "duration": 90,
     "location": "Campus Hall",
-    "tags": "#Kwibuka #Rwanda"
+    "tags": "Kwibuka Rwanda",
+    "createdAt": "2026-06-12T10:30:00.000Z",
+    "updatedAt": "2026-06-12T10:30:00.000Z"
+  },
+  {
+    "id": 6,
+    "title": "Data Structures Lecture",
+    "type": "class",
+    "startDate": "2026-06-20",
+    "endDate": "",
+    "startTime": "10:00",
+    "endTime": "12:00",
+    "duration": 120,
+    "location": "Lecture Hall A",
+    "tags": "computer science algorithms",
+    "createdAt": "2026-06-13T11:00:00.000Z",
+    "updatedAt": "2026-06-13T11:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "title": "Campus Football Match",
+    "type": "event",
+    "startDate": "2026-06-21",
+    "endDate": "",
+    "startTime": "16:00",
+    "endTime": "18:00",
+    "duration": 120,
+    "location": "Sports Ground",
+    "tags": "sports football",
+    "createdAt": "2026-06-13T11:15:00.000Z",
+    "updatedAt": "2026-06-13T11:15:00.000Z"
+  },
+  {
+    "id": 8,
+    "title": "Career Guidance Workshop",
+    "type": "event",
+    "startDate": "2026-06-22",
+    "endDate": "",
+    "startTime": "14:00",
+    "endTime": "16:30",
+    "duration": 150,
+    "location": "Conference Room B",
+    "tags": "career CV interview",
+    "createdAt": "2026-06-14T12:00:00.000Z",
+    "updatedAt": "2026-06-14T12:00:00.000Z"
+  },
+  {
+    "id": 9,
+    "title": "Database Systems Class",
+    "type": "class",
+    "startDate": "2026-06-23",
+    "endDate": "",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "duration": 120,
+    "location": "Computer Lab 1",
+    "tags": "SQL backend data",
+    "createdAt": "2026-06-14T12:20:00.000Z",
+    "updatedAt": "2026-06-14T12:20:00.000Z"
+  },
+  {
+    "id": 10,
+    "title": "Cultural Night Rehearsal",
+    "type": "event",
+    "startDate": "2026-06-25",
+    "endDate": "",
+    "startTime": "17:00",
+    "endTime": "19:00",
+    "duration": 120,
+    "location": "Main Hall",
+    "tags": "culture performance rehearsal",
+    "createdAt": "2026-06-15T13:00:00.000Z",
+    "updatedAt": "2026-06-15T13:00:00.000Z"
+  },
+  {
+    "id": 11,
+    "title": "Quick Library Card Pickup",
+    "type": "event",
+    "startDate": "2026-06-29",
+    "endDate": "",
+    "startTime": "08:00",
+    "endTime": "08:15",
+    "duration": 15,
+    "location": "Library Front Desk",
+    "tags": "admin quick",
+    "createdAt": "2026-06-16T08:00:00.000Z",
+    "updatedAt": "2026-06-16T08:00:00.000Z"
+  },
+  {
+    "id": 12,
+    "title": "Student's Council All-Day Retreat",
+    "type": "event",
+    "startDate": "2026-06-30",
+    "endDate": "2026-06-30",
+    "startTime": "08:00",
+    "endTime": "16:00",
+    "duration": 480,
+    "location": "Off-Campus Retreat Center",
+    "tags": "leadership team-building",
+    "createdAt": "2026-06-16T09:00:00.000Z",
+    "updatedAt": "2026-06-16T09:00:00.000Z"
   }
 ]
