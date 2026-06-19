@@ -2,7 +2,7 @@
 
 -Live Site: [audrey934.github.io/Campus-life-planner](https://audrey934.github.io/Campus-life-planner/)
 
--Demo Video: [https://youtu.be/GNja1UeokNg](https://youtu.be/GNja1UeokNg)
+-Demo Video: [https://youtu.be/GNja1UeokNg](https://youtu.be/NqVdKhhGtbo)
 
 
 ---
