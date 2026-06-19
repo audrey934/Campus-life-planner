@@ -140,30 +140,31 @@ if (timeUnitSelect) {
         announce(`Theme switched to ${themeSelect.value}.`);
     });  
 }
-// Weekly cap setting
+// Weekly cap setting 
 const weeklyCapInput = document.getElementById("weekly-cap");
 const capFeedback = document.getElementById("cap-feedback");
 
 if (weeklyCapInput) {
     const settings = loadSettings();
-    weeklyCapInput.value = settings.weeklyCap || "";
+    weeklyCapInput.value = settings.weeklyCap ? settings.weeklyCap / 60 : "";
 
     weeklyCapInput.addEventListener("change", () => {
-        const value = parseInt(weeklyCapInput.value, 10);
+        const hours = parseFloat(weeklyCapInput.value);
 
-        if (isNaN(value) || value < 0) {
-            capFeedback.textContent = "Please enter a valid number of minutes.";
+        if (isNaN(hours) || hours < 0) {
+            capFeedback.textContent = "Please enter a valid number of hours.";
             capFeedback.style.color = "#E24B4A";
             return;
         }
 
+        const minutes = Math.round(hours * 60);
         const current = loadSettings();
-        current.weeklyCap = value;
+        current.weeklyCap = minutes;
         saveSettings(current);
 
-        capFeedback.textContent = `Cap saved: ${value} minutes per week.`;
+        capFeedback.textContent = `Cap saved: ${hours} hr per week.`;
         capFeedback.style.color = "#1D9E75";
-        announce(`Weekly cap set to ${value} minutes.`);
+        announce(`Weekly cap set to ${hours} hours.`);
     });
 }
 
@@ -200,15 +201,12 @@ function formatDuration(minutes) {
     const settings = loadSettings();
 
     if (settings.timeUnit === "hours") {
-        const rawHours = minutes / 60;
+        const hrs = Math.floor(minutes / 60);
+        const mins = minutes % 60;
 
-        // round to 1 decimal, but keep it as NUMBER
-        const rounded = Math.round(rawHours * 10) / 10;
-
-        // remove .0 cleanly
-        return Number.isInteger(rounded)
-            ? `${rounded} hr`
-            : `${rounded} hr`;
+        if (hrs === 0) return `${mins} min`;
+        if (mins === 0) return `${hrs} hr`;
+        return `${hrs} hr ${mins} min`;
     }
 
     return `${minutes} min`;
@@ -327,6 +325,11 @@ form.addEventListener("submit", (e) => {
     if (!validateDate(activity.startDate)) {
         errors.push("Start date must be in YYYY-MM-DD format.");
     }
+    const today = new Date().toISOString().split("T")[0];
+
+    if (activity.startDate < today) {
+    errors.push("You cannot create an event in the past.");
+    }
 
     if (activity.endDate && !validateDate(activity.endDate)) {
         errors.push("End date must be in YYYY-MM-DD format.");
@@ -358,6 +361,7 @@ form.addEventListener("submit", (e) => {
         announceUrgent(`Form has ${errors.length} error(s). Please review.`);
         return;
     }
+    
 
     errorBox.textContent = "";
 

@@ -47,14 +47,12 @@ function formatDuration(minutes) {
     const settings = loadSettings();
 
     if (settings.timeUnit === "hours") {
-        const hours = minutes / 60;
+        const hrs = Math.floor(minutes / 60);
+        const mins = minutes % 60;
 
-        const rounded =
-            hours % 1 === 0
-                ? hours.toString()        
-                : hours.toFixed(1);       
-
-        return `${rounded} hr`;
+        if (hrs === 0) return `${mins} min`;
+        if (mins === 0) return `${hrs} hr`;
+        return `${hrs} hr ${mins} min`;
     }
 
     return `${minutes} min`;
@@ -85,22 +83,16 @@ function updateCapStatus() {
     if (!capStatusEl) return;
 
     const settings = loadSettings();
-    const cap = settings.weeklyCap;
-
-    if (!cap) {
-        capStatusEl.textContent = "No cap set";
-        return;
-    }
-
+    const cap = settings.weeklyCap || 0;
     const used = getWeeklyTotalMinutes();
     const remaining = cap - used;
 
     if (remaining >= 0) {
-        capStatusEl.textContent = `${remaining} min left`;
-        announce(`You have ${remaining} minutes left this week before reaching your cap.`);
+        capStatusEl.textContent = `${formatDuration(remaining)} left`;
+        announce(`You have ${formatDuration(remaining)} left this week before reaching your cap.`);
     } else {
-        capStatusEl.textContent = `${Math.abs(remaining)} min over`;
-        announceUrgent(`You are ${Math.abs(remaining)} minutes over your weekly cap.`);
+        capStatusEl.textContent = `${formatDuration(Math.abs(remaining))} over`;
+        announceUrgent(`You are ${formatDuration(Math.abs(remaining))} over your weekly cap.`);
     }
 }
 
