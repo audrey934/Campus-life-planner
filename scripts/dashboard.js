@@ -1,4 +1,3 @@
-
 import { loadFromStorage, announce, announceUrgent, loadSettings, applySavedTheme } from "./storage.js";
 let activities = [];
 
@@ -27,6 +26,7 @@ function getStartTime(activity) {
     ).getTime();
 }
 
+// converts "14:30" to "2:30 PM"
 function formatTime(timeStr) {
     if (!timeStr) return "";
 
@@ -40,6 +40,7 @@ function formatTime(timeStr) {
         .padStart(2, "0")} ${period}`;
 }
 
+// shows duration in minutes or hours based on user settings
 function formatDuration(minutes) {
     if (!minutes) return "—";
 
@@ -66,6 +67,7 @@ function isThisWeek(activity) {
 
     return new Date(activity.startDate) >= startOfWeek;
 }
+
 // adds up the duration of every activity happening this week
 function getWeeklyTotalMinutes() {
     return activities
@@ -98,6 +100,7 @@ function isHappeningNow(activity) {
         `${activity.startDate}T${activity.startTime}`
     ).getTime();
 
+    // fall back to startDate if no endDate was set
     const endDate = activity.endDate || activity.startDate;
 
     const end = new Date(
@@ -162,6 +165,7 @@ function renderTrendChart() {
         activities.filter(a => a.startDate === day).length
     );
 
+    // scale bar heights relative to the busiest day
     const max = Math.max(...counts, 1);
 
     trendChartEl.innerHTML = days.map((day, i) => {
@@ -248,7 +252,7 @@ function renderUpcoming() {
     });
 }
 
-// init app: load data from storage or seed file, then show everything on screen
+// on first load, check storage — if empty, pull from seed.json
 async function init() {
     const stored = localStorage.getItem("activities");
     if (!stored) {
@@ -278,5 +282,3 @@ function initDashboard() {
 }
 applySavedTheme();
 document.addEventListener("DOMContentLoaded", init);
-
-
