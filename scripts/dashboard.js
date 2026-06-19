@@ -7,7 +7,6 @@ const campusEventsEl = document.getElementById("campus-events-count");
 const classesEl = document.getElementById("classes-count");
 const weeklyEl = document.getElementById("weekly-events");
 const todayEl = document.getElementById("today-events");
-const capStatusEl = document.getElementById("cap-status");
 const totalDurationEl = document.getElementById("total-duration");
 const topTagEl = document.getElementById("top-tag");
 const trendChartEl = document.getElementById("trend-chart");
@@ -79,24 +78,6 @@ function getWeeklyTotalMinutes() {
     return activities
         .filter(isThisWeek)
         .reduce((sum, a) => sum + (a.duration || 0), 0);
-}
-
-// compares the weekly total against the cap and announces it to screen readers
-function updateCapStatus() {
-    if (!capStatusEl) return;
-
-    const settings = loadSettings();
-    const cap = settings.weeklyCap || 0;
-    const used = getWeeklyTotalMinutes();
-    const remaining = cap - used;
-
-    if (remaining >= 0) {
-        capStatusEl.textContent = `${remaining} min left`;
-        announce(`You have ${remaining} minutes left this week before reaching your cap.`);
-    } else {
-        capStatusEl.textContent = `${Math.abs(remaining)} min over`;
-        announceUrgent(`You are ${Math.abs(remaining)} minutes over your weekly cap.`);
-    }
 }
 
 function isHappeningNow(activity) {
@@ -258,19 +239,16 @@ function renderUpcoming() {
     });
 }
 
-// on first load, check storage — if empty, pull from seed.json
 async function init() {
     const stored = localStorage.getItem("activities");
+
     if (!stored) {
-        // use a relative path so this still works once deployed on GitHub Pages
-        const res = await fetch("./seed.json")
-        activities = await res.json();
-        localStorage.setItem("activities", JSON.stringify(activities));
+        activities = [];
     } else {
         activities = JSON.parse(stored);
     }
 
-    initDashboard();
+    render();
 }
 
 function initDashboard() {
@@ -283,8 +261,6 @@ function initDashboard() {
 
     announce(`Dashboard updated. ${activities.length} total activities.`);
 
-    // cap status goes last so it's the most recent thing a screen reader announces
-    updateCapStatus();
 }
 applySavedTheme();
 document.addEventListener("DOMContentLoaded", init);

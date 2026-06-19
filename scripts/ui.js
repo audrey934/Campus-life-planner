@@ -1,6 +1,7 @@
 import {loadFromStorage,saveToStorage,announce,announceUrgent,saveSettings,loadSettings,applySavedTheme} from "./storage.js";
 import { validateTitle, validateTag, validateDate, validateTime, detectDuplicateWords } from "./validators.js";
 import { compileRegex, highlight } from "./search.js";
+
 // STATE
 
 let activities = [];
@@ -18,8 +19,9 @@ const deleteModal = document.getElementById("delete-modal");
 const form = document.getElementById("activity-form");
 const cancelBtn = document.getElementById("cancel-btn");
 
-const eventContainer = document.getElementById("event-container");
-const classContainer = document.getElementById("class-container");
+// Table elements (replaced the two card containers)
+const tableBody = document.getElementById("table-body");
+const tableEmpty = document.getElementById("table-empty");
 
 const searchInput = document.getElementById("search");
 const filterButtons = document.querySelectorAll(".filter-btn");
@@ -37,7 +39,9 @@ const resetBtn = document.getElementById("resetbtn");
 
 const timeUnitSelect = document.getElementById("time-unit");
 const themeSelect = document.getElementById("theme-select");
-const isEventsPage = Boolean(eventContainer && classContainer);
+
+// isEventsPage now checks for the table body instead of the old card containers
+const isEventsPage = Boolean(tableBody);
 
 // Export button
 
@@ -139,14 +143,11 @@ if (timeUnitSelect) {
 
 
 applySavedTheme();
-
 async function init() {
     const stored = localStorage.getItem("activities");
 
     if (!stored) {
-        const res = await fetch("./seed.json");
-        activities = await res.json();
-        localStorage.setItem("activities", JSON.stringify(activities));
+        activities = [];
     } else {
         activities = JSON.parse(stored);
     }
@@ -193,6 +194,7 @@ function formatDuration(minutes) {
 
     return `${minutes} min`;
 }
+
 function getTimeValue(a) {
     return new Date(`${a.startDate}T${a.startTime}`).getTime();
 }
@@ -288,7 +290,7 @@ form.addEventListener("submit", (e) => {
         ),
         location: form.location.value.trim(),
         tags: form.tags.value.trim(),
-        createdAt: existingActivity ? existingActivity.createdAt :nowStamp,
+        createdAt: existingActivity ? existingActivity.createdAt : nowStamp,
         updatedAt: nowStamp,
     };
 
@@ -298,7 +300,7 @@ form.addEventListener("submit", (e) => {
         errors.push("Title cannot be empty or have leading/trailing spaces.");
     }
 
-    // advanced regex check: to catch accidental repeats like ]
+    // advanced regex check: catches accidental repeated words
     if (detectDuplicateWords(activity.title)) {
         errors.push("Title has the same word twice in a row. Please fix it.");
     }
@@ -363,7 +365,6 @@ form.addEventListener("submit", (e) => {
 
 // ==========================
 // DELETE + FILTER + RENDER
-// (UNCHANGED LOGIC BELOW)
 // ==========================
 
 if (cancelDeleteBtn) {
@@ -403,15 +404,12 @@ if (searchInput) searchInput.addEventListener("input", render);
 if (caseSensitiveToggle) caseSensitiveToggle.addEventListener("change", render);
 if (sortSelect) sortSelect.addEventListener("change", render);
 
-//Rendering
+// Rendering — now builds a table instead of separate card grids
 function render() {
     if (!isEventsPage) return;
 
     if (!Array.isArray(activities)) activities = [];
 
-    eventContainer.innerHTML = "";
-    classContainer.innerHTML = "";
-    
     const searchValue = searchInput.value.trim();
 
     // if the checkbox is checked, search exactly as typed (no "i" flag)
@@ -444,68 +442,73 @@ function render() {
 
     filtered.sort((a, b) => {
         switch (sortValue) {
-            case "date-asc":
-                return getTimeValue(a) - getTimeValue(b);
-            case "date-desc":
-                return getTimeValue(b) - getTimeValue(a);
-            case "title-asc":
-                return a.title.localeCompare(b.title);
-            case "title-desc":
-                return b.title.localeCompare(a.title);
-            case "duration-asc":
-                return a.duration - b.duration;
-            case "duration-desc":
-                return b.duration - a.duration;
-            default:
-                return getTimeValue(a) - getTimeValue(b);
+            case "date-asc":    return getTimeValue(a) - getTimeValue(b);
+            case "date-desc":   return getTimeValue(b) - getTimeValue(a);
+            case "title-asc":   return a.title.localeCompare(b.title);
+            case "title-desc":  return b.title.localeCompare(a.title);
+            case "duration-asc":  return a.duration - b.duration;
+            case "duration-desc": return b.duration - a.duration;
+            default:            return getTimeValue(a) - getTimeValue(b);
         }
     });
 
-    filtered.forEach(activity => {
-        const card = createCard(activity, regex);
+    // Clear old rows
+    tableBody.innerHTML = "";
 
-        if (activity.type === "event") {
-            eventContainer.appendChild(card);
-        } else {
-            classContainer.appendChild(card);
-        }
-    });
+    if (filtered.length === 0) {
+        tableEmpty.classList.remove("hidden");
+    } else {
+        tableEmpty.classList.add("hidden");
+        filtered.forEach(activity => {
+            tableBody.appendChild(createRow(activity, regex));
+        });
+    }
 }
 
-//Card display
-function createCard(a, regex = null) {
-    const div = document.createElement("div");
-    div.classList.add("card");
+// Build one table row per activity
+function createRow(a, regex = null) {
+    const tr = document.createElement("tr");
 
     const displayTitle = regex ? highlight(a.title, regex) : a.title;
-    const formattedTags = a.tags
-    ? a.tags
+
+    // format tags as #tag pills then highlight if needed
+    const formattedTags = (a.tags || "")
         .split(/[,\s]+/)
         .filter(Boolean)
         .map(tag => `#${tag.replace(/^#/, "")}`)
-        .join(" ")
-    : "";
-    
+        .join(" ");
 
+    const displayTags = regex ? highlight(formattedTags, regex) : formattedTags;
 
-    div.innerHTML = `
-        <h3 class="card-title">${displayTitle}</h3>
-        <p class="card-meta"><strong>Time:</strong> ${formatTime(a.startTime)} – ${formatTime(a.endTime)}</p>
-        <p class="card-meta"><strong>Duration:</strong> ${formatDuration(a.duration)}</p>
-        <p class="card-meta"><strong>Location:</strong> ${a.location || "Not specified"}</p>
-        ${formattedTags ? `<span class="card-tag">${formattedTags}</span>` : ""}
-        <div class="card-actions">
+    const typeBadge = a.type === "event"
+        ? `<span class="card-type-badge event">Event</span>`
+        : `<span class="card-type-badge class">Class</span>`;
+
+    // show end date only when it's different from start date
+    const dateDisplay = a.endDate && a.endDate !== a.startDate
+        ? `${a.startDate} → ${a.endDate}`
+        : a.startDate;
+
+    tr.innerHTML = `
+        <td data-label="Title" class="card-title">${displayTitle}</td>
+        <td data-label="Type">${typeBadge}</td>
+        <td data-label="Date">${dateDisplay}</td>
+        <td data-label="Time">${formatTime(a.startTime)} – ${formatTime(a.endTime)}</td>
+        <td data-label="Duration">${formatDuration(a.duration)}</td>
+        <td data-label="Location">${a.location || "—"}</td>
+        <td data-label="Tags"><span class="card-tag">${displayTags || "—"}</span></td>
+        <td data-label="Actions" class="row-actions">
             <button class="edit-btn">Edit</button>
             <button class="delete-btn">Delete</button>
-        </div>
+        </td>
     `;
 
-    div.querySelector(".edit-btn").addEventListener("click", () => openModal(a));
+    tr.querySelector(".edit-btn").addEventListener("click", () => openModal(a));
 
-    div.querySelector(".delete-btn").addEventListener("click", () => {
+    tr.querySelector(".delete-btn").addEventListener("click", () => {
         deleteTargetId = a.id;
         deleteModal.classList.remove("hidden");
     });
 
-    return div;
+    return tr;
 }

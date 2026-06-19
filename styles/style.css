@@ -522,3 +522,97 @@ border-color: #4A3868;
 body.dark-theme footer {
 color: #AAA;
 }
+
+
+/* ── Activities table (events page) ── */
+
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+#activities-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+#activities-table th,
+#activities-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#activities-table thead tr {
+    background: #4A0E8F;
+    color: white;
+}
+
+#activities-table tbody tr:hover {
+    background: #F5F0E8;
+    transition: background 0.15s ease;
+}
+
+#activities-table td.row-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Third breakpoint — small mobile, stacks table as labeled rows */
+@media (max-width: 480px) {
+    #activities-table thead {
+        display: none;
+    }
+
+    #activities-table,
+    #activities-table tbody,
+    #activities-table tr,
+    #activities-table td {
+        display: block;
+        width: 100%;
+    }
+
+    #activities-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    #activities-table td {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    #activities-table td::before {
+        content: attr(data-label) ": ";
+        font-weight: bold;
+        color: #4A0E8F;
+        min-width: 90px;
+        flex-shrink: 0;
+    }
+
+    #activities-table td.row-actions::before {
+        content: "";
+        min-width: 0;
+    }
+}
+
+/* Dark mode for table */
+body.dark-theme #activities-table thead tr {
+    background: #2D1B4E;
+}
+
+body.dark-theme #activities-table tbody tr:hover {
+    background: #3a2460;
+}
+
+body.dark-theme #activities-table th,
+body.dark-theme #activities-table td {
+    border-color: #4A3868;
+}

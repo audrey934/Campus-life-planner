@@ -1,4 +1,3 @@
-
 const KEY = "activities";
 
 // Save activities into browser storage

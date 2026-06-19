@@ -48,7 +48,6 @@
             </div>
         </section>
 
-
         <!-- Sort -->
         <section id="sort-section">
             <label for="sort-select">Sort by</label>
@@ -62,23 +61,33 @@
             </select>
         </section>
 
-        
-        <section id="campus-events">
-            <h2>Campus Events</h2>
-            <div id="event-container" class="records-grid"></div>
-        </section>
-
-        <!-- Classes -->
-        <section id="classes">
-            <h2>Classes</h2>
-            <div id="class-container" class="records-grid"></div>
+        <!-- Activities Table -->
+        <section id="activities-table-section">
+            <h2>All Activities</h2>
+            <div class="table-wrapper">
+                <table id="activities-table" aria-label="Activities table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Duration</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Tags</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+            <div id="table-empty" class="empty-state hidden">No activities match your search.</div>
         </section>
 
         <!-- Add Button -->
         <section id="add-section">
             <button id="add-record-btn">+ Add Event/Class</button>
         </section>
-
 
         <section id="form-modal" class="hidden">
             <div class="modal-content">
