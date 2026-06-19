@@ -176,17 +176,23 @@ if (resetBtn) {
 }
 
 // Helper functions
-
 function formatDuration(minutes) {
     const settings = loadSettings();
 
     if (settings.timeUnit === "hours") {
-        return `${(minutes / 60).toFixed(1)} hr`;
+        const rawHours = minutes / 60;
+
+        // round to 1 decimal, but keep it as NUMBER
+        const rounded = Math.round(rawHours * 10) / 10;
+
+        // remove .0 cleanly
+        return Number.isInteger(rounded)
+            ? `${rounded} hr`
+            : `${rounded} hr`;
     }
 
     return `${minutes} min`;
 }
-
 function getTimeValue(a) {
     return new Date(`${a.startDate}T${a.startTime}`).getTime();
 }

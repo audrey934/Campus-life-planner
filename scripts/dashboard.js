@@ -42,13 +42,19 @@ function formatTime(timeStr) {
 
 // shows duration in minutes or hours based on user settings
 function formatDuration(minutes) {
-    if (!minutes) return "—";
+    if (!minutes && minutes !== 0) return "—";
 
     const settings = loadSettings();
 
     if (settings.timeUnit === "hours") {
-        const hours = (minutes / 60).toFixed(1);
-        return `${hours} hr`;
+        const hours = minutes / 60;
+
+        const rounded =
+            hours % 1 === 0
+                ? hours.toString()        
+                : hours.toFixed(1);       
+
+        return `${rounded} hr`;
     }
 
     return `${minutes} min`;
