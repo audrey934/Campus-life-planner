@@ -186,19 +186,13 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 if (resetBtn) {
+    
     resetBtn.addEventListener("click", async () => {
-        if (!confirm("Reset all data?")) return;
+    if (!confirm("Reset all data? This will reload the page.")) return;
 
-        localStorage.removeItem("activities");
-
-        const res = await fetch("./seed.json");
-        activities = await res.json();
-
-        localStorage.setItem("activities", JSON.stringify(activities));
-
-        render();
-        announce("Reset done.");
-    });
+    localStorage.removeItem("activities");
+    window.location.href = "events.html";
+});
 }
 
 // Helper functions
