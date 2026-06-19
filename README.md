@@ -1,6 +1,6 @@
 # Campus Life Planner
 
-**Repository:** [https://github.com/audrey934/Campus-life-planner](https://github.com/audrey934/Campus-life-planner)  
+Live Site: [audrey934.github.io/Campus-life-planner](https://audrey934.github.io/Campus-life-planner/)
 
 
 ---
